@@ -1,32 +1,33 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
+using CRM.BLL.DTO.Client;
 using CRM.BLL.DTO.Company;
 using CRM.DAL.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRM.BLL.MediatR.Company.GetAll
+namespace CRM.BLL.MediatR.Client.GetAll
 {
-    public class GetAllCompaniesHandler : IRequestHandler<GetAllCompaniesQuery, Result<IEnumerable<CompanyDTO>>>
+    public class GetAllClientsHandler : IRequestHandler<GetAllClientsQuery, Result<IEnumerable<ClientDTO>>>
     {
         private readonly CRMDbContext _context;
         private readonly IMapper _mapper;
 
-        public GetAllCompaniesHandler(CRMDbContext context, IMapper mapper)
+        public GetAllClientsHandler(CRMDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<Result<IEnumerable<CompanyDTO>>> Handle(
-            GetAllCompaniesQuery request,
+        public async Task<Result<IEnumerable<ClientDTO>>> Handle(
+            GetAllClientsQuery request,
             CancellationToken cancellationToken)
         {
-            var companies = await _context.Companies
+            var clients = await _context.Clients
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
 
-            var dtos = _mapper.Map<IEnumerable<CompanyDTO>>(companies);
+            var dtos = _mapper.Map<IEnumerable<ClientDTO>>(clients);
 
             return Result.Success(dtos);
         }

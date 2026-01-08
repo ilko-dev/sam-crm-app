@@ -1,8 +1,9 @@
-﻿using CRM.BLL.DTO.Company;
+﻿using Ardalis.Result;
+using CRM.BLL.DTO.Company;
 using MediatR;
 
 namespace CRM.BLL.MediatR.Company.GetAll
 {
     public record GetAllCompaniesQuery()
-    : IRequest<IEnumerable<CompanyDTO>>;
+    : IRequest<Result<IEnumerable<CompanyDTO>>>;
 }

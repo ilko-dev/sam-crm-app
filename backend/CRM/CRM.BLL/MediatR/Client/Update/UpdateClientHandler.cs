@@ -4,30 +4,30 @@ using CRM.DAL.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRM.BLL.MediatR.Company.Update
+namespace CRM.BLL.MediatR.Client.Update
 {
-    public class UpdateCompanyHandler : IRequestHandler<UpdateCompanyCommand, Result>
+    public class UpdateClientHandler : IRequestHandler<UpdateClientCommand, Result>
     {
         private readonly CRMDbContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateCompanyHandler(CRMDbContext context, IMapper mapper)
+        public UpdateClientHandler(CRMDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
         public async Task<Result> Handle(
-            UpdateCompanyCommand request,
+            UpdateClientCommand request,
             CancellationToken cancellationToken)
         {
-            var company = await _context.Companies
+            var client = await _context.Clients
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            if (company == null)
+            if (client == null)
                 return Result.NotFound();
 
-            _mapper.Map(request.Dto, company);
+            _mapper.Map(request.Dto, client);
             await _context.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

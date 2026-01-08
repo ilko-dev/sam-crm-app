@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Ardalis.Result;
+using AutoMapper;
 using CRM.BLL.DTO.Company;
 using CRM.DAL.Context;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CRM.BLL.MediatR.Company.GetById
 {
-    public class GetCompanyByIdHandler : IRequestHandler<GetCompanyByIdQuery, CompanyDTO?>
+    public class GetCompanyByIdHandler : IRequestHandler<GetCompanyByIdQuery, Result<CompanyDTO>>
     {
         private readonly CRMDbContext _context;
         private readonly IMapper _mapper;
@@ -17,7 +18,7 @@ namespace CRM.BLL.MediatR.Company.GetById
             _mapper = mapper;
         }
 
-        public async Task<CompanyDTO?> Handle(
+        public async Task<Result<CompanyDTO>> Handle(
             GetCompanyByIdQuery request,
             CancellationToken cancellationToken)
         {
@@ -25,9 +26,10 @@ namespace CRM.BLL.MediatR.Company.GetById
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            return company == null
-                ? null
-                : _mapper.Map<CompanyDTO>(company);
+            if (company is null)
+                return Result.NotFound("Company not found");
+
+            return Result.Success(_mapper.Map<CompanyDTO>(company));
         }
     }
 }

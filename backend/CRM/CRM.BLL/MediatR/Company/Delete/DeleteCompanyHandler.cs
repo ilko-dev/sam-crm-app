@@ -1,4 +1,5 @@
-﻿using CRM.DAL.Context;
+﻿using Ardalis.Result;
+using CRM.DAL.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CRM.BLL.MediatR.Company.Delete
 {
-    public class DeleteCompanyHandler : IRequestHandler<DeleteCompanyCommand, bool>
+    public class DeleteCompanyHandler : IRequestHandler<DeleteCompanyCommand, Result>
     {
         private readonly CRMDbContext _context;
 
@@ -18,7 +19,7 @@ namespace CRM.BLL.MediatR.Company.Delete
             _context = context;
         }
 
-        public async Task<bool> Handle(
+        public async Task<Result> Handle(
             DeleteCompanyCommand request,
             CancellationToken cancellationToken)
         {
@@ -26,12 +27,12 @@ namespace CRM.BLL.MediatR.Company.Delete
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (company == null)
-                return false;
+                return Result.NotFound();
 
             _context.Companies.Remove(company);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return true;
+            return Result.Success();
         }
     }
 }

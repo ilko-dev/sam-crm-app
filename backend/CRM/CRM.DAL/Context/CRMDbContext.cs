@@ -10,8 +10,8 @@ namespace CRM.DAL.Context
         {
         }
 
-        public DbSet<Company> Companies { get; set; }
-
+        public DbSet<Company> Companies => Set<Company>();
+        public DbSet<Client> Clients => Set<Client>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());

@@ -1,8 +1,9 @@
-﻿using CRM.BLL.DTO.Company;
+﻿using Ardalis.Result;
+using CRM.BLL.DTO.Company;
 using MediatR;
 
 namespace CRM.BLL.MediatR.Company.GetById
 {
     public record GetCompanyByIdQuery(int Id)
-     : IRequest<CompanyDTO?>;
+     : IRequest<Result<CompanyDTO?>>;
 }
