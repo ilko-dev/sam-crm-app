@@ -21,6 +21,9 @@ namespace CRM.DAL.Repositories
         public async System.Threading.Tasks.Task DeleteAsync(int? id)
         {
             var entity = await GetAsync(id);
+            if (entity == null)
+                throw new KeyNotFoundException($"Entity '{typeof(T).Name}' with id '{id?.ToString() ?? "null"}' not found.");
+
             _context.Set<T>().Remove(entity);
 
             await _context.SaveChangesAsync();

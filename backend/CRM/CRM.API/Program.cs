@@ -3,6 +3,7 @@ using CRM.BLL.MediatR.Company.Create;
 using CRM.DAL.Context;
 using CRM.DAL.Repositories;
 using CRM.DAL.Repositories.Company;
+using CRM.DAL.Repositories.User;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<CRMDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStr")));
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateCompanyCommand).Assembly));

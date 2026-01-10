@@ -4,6 +4,6 @@ using MediatR;
 
 namespace CRM.BLL.MediatR.Client.Update
 {
-    public record UpdateClientCommand(Guid Id, CreateUpdateClientDTO Dto)
+    public record UpdateClientCommand(int Id, CreateUpdateClientDTO Dto)
     : IRequest<Result>;
 }

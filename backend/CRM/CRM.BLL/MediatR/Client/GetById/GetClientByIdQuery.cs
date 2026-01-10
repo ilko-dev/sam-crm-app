@@ -4,6 +4,6 @@ using MediatR;
 
 namespace CRM.BLL.MediatR.Client.GetById
 {
-    public record GetClientByIdQuery(Guid Id)
-     : IRequest<Result<ClientDTO?>>;
+    public record GetClientByIdQuery(int Id)
+     : IRequest<Result<ClientDTO>>;
 }

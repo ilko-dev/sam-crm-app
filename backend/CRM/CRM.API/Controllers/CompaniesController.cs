@@ -1,5 +1,4 @@
-﻿using Ardalis.Result.AspNetCore;
-using CRM.BLL.DTO.Company;
+﻿using CRM.BLL.DTO.Company;
 using CRM.BLL.MediatR.Company.Create;
 using CRM.BLL.MediatR.Company.Delete;
 using CRM.BLL.MediatR.Company.GetAll;

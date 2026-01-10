@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.DAL.Migrations
 {
     [DbContext(typeof(CRMDbContext))]
-    [Migration("20260106184130_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260110185114_Initial_Create")]
+    partial class Initial_Create
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,11 @@ namespace CRM.DAL.Migrations
 
             modelBuilder.Entity("CRM.Domain.Entities.Client", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
@@ -56,7 +58,7 @@ namespace CRM.DAL.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("CRM.Domain.Entities.Company", b =>
@@ -88,6 +90,57 @@ namespace CRM.DAL.Migrations
                     b.ToTable("Companies", (string)null);
                 });
 
+            modelBuilder.Entity("CRM.Domain.Entities.User.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("CRM.Domain.Entities.User.UserProfile", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserProfiles", (string)null);
+                });
+
             modelBuilder.Entity("CRM.Domain.Entities.Client", b =>
                 {
                     b.HasOne("CRM.Domain.Entities.Company", "Company")
@@ -97,9 +150,26 @@ namespace CRM.DAL.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("CRM.Domain.Entities.User.UserProfile", b =>
+                {
+                    b.HasOne("CRM.Domain.Entities.User.User", "User")
+                        .WithOne("Profile")
+                        .HasForeignKey("CRM.Domain.Entities.User.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CRM.Domain.Entities.Company", b =>
                 {
                     b.Navigation("Clients");
+                });
+
+            modelBuilder.Entity("CRM.Domain.Entities.User.User", b =>
+                {
+                    b.Navigation("Profile")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

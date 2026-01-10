@@ -3,6 +3,6 @@ using MediatR;
 
 namespace CRM.BLL.MediatR.Client.Delete
 {
-    public record DeleteClientCommand(int Id)
+    public record DeleteUserCommand(int Id)
     : IRequest<Result>;
 }

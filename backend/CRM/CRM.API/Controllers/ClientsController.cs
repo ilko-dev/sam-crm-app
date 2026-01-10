@@ -1,5 +1,4 @@
 ﻿using CRM.BLL.DTO.Client;
-using CRM.BLL.DTO.Company;
 using CRM.BLL.MediatR.Client.Create;
 using CRM.BLL.MediatR.Client.Delete;
 using CRM.BLL.MediatR.Client.GetAll;
@@ -23,7 +22,7 @@ namespace CRM.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClientDTO?>> Get(Guid id)
+        public async Task<ActionResult<ClientDTO?>> Get(int id)
         {
             return HandleResult(await _mediator.Send(new GetClientByIdQuery(id)));
         }
@@ -40,13 +39,13 @@ namespace CRM.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, CreateUpdateClientDTO dto)
+        public async Task<IActionResult> Update(int id, CreateUpdateClientDTO dto)
         {
             return HandleResult(await _mediator.Send(new UpdateClientCommand(id, dto)));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             return HandleResult(await _mediator.Send(new DeleteClientCommand(id)));
         }
