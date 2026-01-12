@@ -7,7 +7,7 @@ using CRM.DAL.Repositories.User;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRM.BLL.MediatR.Client.GetAll
+namespace CRM.BLL.MediatR.User.GetAll
 {
     public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, Result<IEnumerable<UserDTO>>>
     {

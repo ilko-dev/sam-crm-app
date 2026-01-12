@@ -11,6 +11,5 @@ namespace CRM.BLL.Mapping
             CreateMap<Entities.Company, CompanyDTO>().ReverseMap();
             CreateMap<CreateUpdateCompanyDTO, Entities.Company>().ReverseMap();
         }
-        
     }
 }

@@ -5,8 +5,8 @@
         Task<T> GetAsync(int? id);
         Task<List<T>> GetAllAsync();
         Task<T> AddAsync(T entity);
-        Task DeleteAsync(int? id);
-        Task UpdateAsync(T entity);
+        System.Threading.Tasks.Task DeleteAsync(int? id);
+        System.Threading.Tasks.Task UpdateAsync(T entity);
         Task<bool> Exists(int id);
     }
 }

@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="MediatR\User\Update\" />
     <Folder Include="Validator\" />
   </ItemGroup>

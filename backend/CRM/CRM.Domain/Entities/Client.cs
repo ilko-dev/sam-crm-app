@@ -10,5 +10,8 @@
         public int? CompanyId { get; private set; }
         public Company? Company { get; private set; } = null;
         public DateTime CreatedAt { get; private set; }
+
+        public ICollection<Task> Tasks { get; private set; }
+        = new List<Task>();
     }
 }

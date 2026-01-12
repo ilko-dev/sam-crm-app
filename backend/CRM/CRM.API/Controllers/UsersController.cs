@@ -1,9 +1,8 @@
-﻿using CRM.BLL.DTO.Company;
-using CRM.BLL.DTO.User;
-using CRM.BLL.MediatR.Client.Create;
-using CRM.BLL.MediatR.Client.Delete;
-using CRM.BLL.MediatR.Client.GetAll;
-using CRM.BLL.MediatR.Client.GetById;
+﻿using CRM.BLL.DTO.User;
+using CRM.BLL.MediatR.User.Create;
+using CRM.BLL.MediatR.User.Delete;
+using CRM.BLL.MediatR.User.GetAll;
+using CRM.BLL.MediatR.User.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

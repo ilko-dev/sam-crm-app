@@ -1,16 +1,12 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
-using CRM.BLL.DTO.Client;
-using CRM.BLL.DTO.Company;
 using CRM.BLL.DTO.User;
-using CRM.DAL.Context;
 using CRM.DAL.Repositories.User;
 using CRM.Domain.Entities.User;
 using MediatR;
-using Entities = CRM.Domain.Entities;
-using BCrypt.Net;
+using UserModel = CRM.Domain.Entities.User.User;
 
-namespace CRM.BLL.MediatR.Client.Create
+namespace CRM.BLL.MediatR.User.Create
 {
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, Result<UserDTO>>
     {
@@ -30,7 +26,7 @@ namespace CRM.BLL.MediatR.Client.Create
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Dto.Password);
 
-            var user = new User(request.Dto.Email, passwordHash, request.Dto.Role);
+            var user = new UserModel(request.Dto.Email, passwordHash, request.Dto.Role);
             var profile = new UserProfile(user.Id, request.Dto.FirstName, request.Dto.LastName, request.Dto.Phone);
 
             user.AttachProfile(profile);

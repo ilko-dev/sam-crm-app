@@ -2,6 +2,7 @@
 using CRM.Domain.Entities;
 using CRM.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
+using Task = CRM.Domain.Entities.Task;
 
 namespace CRM.DAL.Context
 {
@@ -15,6 +16,7 @@ namespace CRM.DAL.Context
         public DbSet<Client> Clients => Set<Client>();
         public DbSet<User> Users => Set<User>();
         public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
+        public DbSet<Task> Tasks => Set<Task>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CRMDbContext).Assembly);

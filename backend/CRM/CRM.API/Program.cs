@@ -3,6 +3,7 @@ using CRM.BLL.MediatR.Company.Create;
 using CRM.DAL.Context;
 using CRM.DAL.Repositories;
 using CRM.DAL.Repositories.Company;
+using CRM.DAL.Repositories.Task;
 using CRM.DAL.Repositories.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<CRMDbContext>(options =>
 
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateCompanyCommand).Assembly));

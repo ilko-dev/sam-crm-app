@@ -7,7 +7,7 @@ using CRM.DAL.Repositories.User;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRM.BLL.MediatR.Client.GetById
+namespace CRM.BLL.MediatR.User.GetById
 {
     public class GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, Result<UserDTO?>>
     {

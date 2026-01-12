@@ -3,7 +3,7 @@ using CRM.DAL.Repositories.User;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRM.BLL.MediatR.Client.Delete
+namespace CRM.BLL.MediatR.User.Delete
 {
     public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, Result>
     {
@@ -31,8 +31,6 @@ namespace CRM.BLL.MediatR.Client.Delete
             {
                 return Result.Error($"Failed to delete user: {ex.Message}");
             }
-
-            
         }
     }
 }
