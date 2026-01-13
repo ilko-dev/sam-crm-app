@@ -1,19 +1,18 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
-using CRM.DAL.Context;
+using CRM.DAL.Repositories.Company;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRM.BLL.MediatR.Company.Update
 {
     public class UpdateCompanyHandler : IRequestHandler<UpdateCompanyCommand, Result>
     {
-        private readonly CRMDbContext _context;
+        private readonly ICompanyRepository _companyRepository;
         private readonly IMapper _mapper;
 
-        public UpdateCompanyHandler(CRMDbContext context, IMapper mapper)
+        public UpdateCompanyHandler(ICompanyRepository companyRepository, IMapper mapper)
         {
-            _context = context;
+            _companyRepository = companyRepository;
             _mapper = mapper;
         }
 
@@ -21,15 +20,16 @@ namespace CRM.BLL.MediatR.Company.Update
             UpdateCompanyCommand request,
             CancellationToken cancellationToken)
         {
-            var company = await _context.Companies
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var company = await _companyRepository.GetAsync(request.Id);
 
             if (company == null)
-                return Result.NotFound();
+            {
+                return Result.NotFound($"Company with Id {request.Id} not found.");
+            }
 
             _mapper.Map(request.Dto, company);
-            await _context.SaveChangesAsync(cancellationToken);
 
+            await _companyRepository.UpdateAsync(company);
             return Result.Success();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Ardalis.Result;
 using CRM.DAL.Context;
+using CRM.DAL.Repositories.Client;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,27 +8,25 @@ namespace CRM.BLL.MediatR.Client.Delete
 {
     public class DeleteClientHandler : IRequestHandler<DeleteClientCommand, Result>
     {
-        private readonly CRMDbContext _context;
-
-        public DeleteClientHandler(CRMDbContext context)
+        private readonly IClientRepository _clientRepository;
+        public DeleteClientHandler(IClientRepository clientRepository)
         {
-            _context = context;
+            _clientRepository = clientRepository;
         }
 
         public async Task<Result> Handle(
             DeleteClientCommand request,
             CancellationToken cancellationToken)
         {
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-
-            if (client == null)
-                return Result.NotFound();
-
-            _context.Clients.Remove(client);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Result.Success();
+            try
+            {
+                await _clientRepository.DeleteAsync(request.Id);
+                return Result.Success();
+            }
+            catch (KeyNotFoundException knf)
+            {
+                return Result.NotFound(knf.Message);
+            }
         }
     }
 }

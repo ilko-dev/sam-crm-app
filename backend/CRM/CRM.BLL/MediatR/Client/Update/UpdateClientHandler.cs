@@ -1,19 +1,18 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
-using CRM.DAL.Context;
+using CRM.DAL.Repositories.Client;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRM.BLL.MediatR.Client.Update
 {
     public class UpdateClientHandler : IRequestHandler<UpdateClientCommand, Result>
     {
-        private readonly CRMDbContext _context;
+        private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
 
-        public UpdateClientHandler(CRMDbContext context, IMapper mapper)
+        public UpdateClientHandler(IClientRepository clientRepository, IMapper mapper)
         {
-            _context = context;
+            _clientRepository = clientRepository;
             _mapper = mapper;
         }
 
@@ -21,15 +20,16 @@ namespace CRM.BLL.MediatR.Client.Update
             UpdateClientCommand request,
             CancellationToken cancellationToken)
         {
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var client = await _clientRepository.GetAsync(request.Id);
 
             if (client == null)
-                return Result.NotFound();
+            {
+                return Result.NotFound($"Client with Id {request.Id} not found.");
+            }
 
             _mapper.Map(request.Dto, client);
-            await _context.SaveChangesAsync(cancellationToken);
 
+            await _clientRepository.UpdateAsync(client);
             return Result.Success();
         }
     }

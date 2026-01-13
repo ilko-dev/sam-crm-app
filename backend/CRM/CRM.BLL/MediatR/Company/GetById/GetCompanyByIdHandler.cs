@@ -1,20 +1,19 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
 using CRM.BLL.DTO.Company;
-using CRM.DAL.Context;
+using CRM.DAL.Repositories.Company;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRM.BLL.MediatR.Company.GetById
 {
     public class GetCompanyByIdHandler : IRequestHandler<GetCompanyByIdQuery, Result<CompanyDTO>>
     {
-        private readonly CRMDbContext _context;
+        private readonly ICompanyRepository _companyRepository;
         private readonly IMapper _mapper;
 
-        public GetCompanyByIdHandler(CRMDbContext context, IMapper mapper)
+        public GetCompanyByIdHandler(ICompanyRepository companyRepository, IMapper mapper)
         {
-            _context = context;
+            _companyRepository = companyRepository;
             _mapper = mapper;
         }
 
@@ -22,9 +21,7 @@ namespace CRM.BLL.MediatR.Company.GetById
             GetCompanyByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var company = await _context.Companies
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var company = await _companyRepository.GetAsync(request.Id);
 
             if (company is null)
                 return Result.NotFound("Company not found");

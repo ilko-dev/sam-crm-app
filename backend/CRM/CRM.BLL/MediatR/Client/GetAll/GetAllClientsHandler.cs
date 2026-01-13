@@ -3,6 +3,7 @@ using AutoMapper;
 using CRM.BLL.DTO.Client;
 using CRM.BLL.DTO.Company;
 using CRM.DAL.Context;
+using CRM.DAL.Repositories.Client;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,12 +11,12 @@ namespace CRM.BLL.MediatR.Client.GetAll
 {
     public class GetAllClientsHandler : IRequestHandler<GetAllClientsQuery, Result<IEnumerable<ClientDTO>>>
     {
-        private readonly CRMDbContext _context;
+        private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
 
-        public GetAllClientsHandler(CRMDbContext context, IMapper mapper)
+        public GetAllClientsHandler(IClientRepository clientRepository, IMapper mapper)
         {
-            _context = context;
+            _clientRepository = clientRepository;
             _mapper = mapper;
         }
 
@@ -23,10 +24,7 @@ namespace CRM.BLL.MediatR.Client.GetAll
             GetAllClientsQuery request,
             CancellationToken cancellationToken)
         {
-            var clients = await _context.Clients
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
-
+            var clients = await _clientRepository.GetAllAsync();
             var dtos = _mapper.Map<IEnumerable<ClientDTO>>(clients);
 
             return Result.Success(dtos);

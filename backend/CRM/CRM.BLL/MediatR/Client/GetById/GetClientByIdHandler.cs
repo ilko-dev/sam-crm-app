@@ -2,6 +2,7 @@
 using AutoMapper;
 using CRM.BLL.DTO.Client;
 using CRM.DAL.Context;
+using CRM.DAL.Repositories.Client;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,12 +10,12 @@ namespace CRM.BLL.MediatR.Client.GetById
 {
     public class GetClientByIdHandler : IRequestHandler<GetClientByIdQuery, Result<ClientDTO>>
     {
-        private readonly CRMDbContext _context;
+        private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
 
-        public GetClientByIdHandler(CRMDbContext context, IMapper mapper)
+        public GetClientByIdHandler(IClientRepository clientRepository, IMapper mapper)
         {
-            _context = context;
+            _clientRepository = clientRepository;
             _mapper = mapper;
         }
 
@@ -22,9 +23,7 @@ namespace CRM.BLL.MediatR.Client.GetById
             GetClientByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var client = await _context.Clients
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var client = await _clientRepository.GetAsync(request.Id);
 
             if (client is null)
                 return Result.NotFound("Client not found");

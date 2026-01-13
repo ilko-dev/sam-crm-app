@@ -1,38 +1,31 @@
 ﻿using Ardalis.Result;
-using CRM.DAL.Context;
+using CRM.DAL.Repositories.Company;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CRM.BLL.MediatR.Company.Delete
 {
     public class DeleteCompanyHandler : IRequestHandler<DeleteCompanyCommand, Result>
     {
-        private readonly CRMDbContext _context;
+        private readonly ICompanyRepository _companyRepository;
 
-        public DeleteCompanyHandler(CRMDbContext context)
+        public DeleteCompanyHandler(ICompanyRepository companyRepository)
         {
-            _context = context;
+            _companyRepository = companyRepository;
         }
 
         public async Task<Result> Handle(
             DeleteCompanyCommand request,
             CancellationToken cancellationToken)
         {
-            var company = await _context.Companies
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-
-            if (company == null)
-                return Result.NotFound();
-
-            _context.Companies.Remove(company);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Result.Success();
+            try
+            {
+                await _companyRepository.DeleteAsync(request.Id);
+                return Result.Success();
+            }
+            catch (KeyNotFoundException knf)
+            {
+                return Result.NotFound(knf.Message);
+            }
         }
     }
 }

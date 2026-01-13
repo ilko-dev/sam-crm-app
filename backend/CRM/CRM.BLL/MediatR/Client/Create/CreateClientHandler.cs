@@ -3,6 +3,7 @@ using AutoMapper;
 using CRM.BLL.DTO.Client;
 using CRM.BLL.DTO.Company;
 using CRM.DAL.Context;
+using CRM.DAL.Repositories.Client;
 using MediatR;
 using Entities = CRM.Domain.Entities;
 
@@ -10,21 +11,19 @@ namespace CRM.BLL.MediatR.Client.Create
 {
     public class CreateClientHandler : IRequestHandler<CreateClientCommand, Result<ClientDTO>>
     {
-        private readonly CRMDbContext _context;
+        private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
 
-        public CreateClientHandler(CRMDbContext context, IMapper mapper)
+        public CreateClientHandler(IClientRepository clientRepository, IMapper mapper)
         {
-            _context = context;
+            _clientRepository = clientRepository;
             _mapper = mapper;
         }
 
         public async Task<Result<ClientDTO>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
             var client = _mapper.Map<Entities.Client>(request.Dto);
-
-            _context.Clients.Add(client);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _clientRepository.AddAsync(client);
 
             var dto = _mapper.Map<ClientDTO>(client);
             return Result.Success(dto);

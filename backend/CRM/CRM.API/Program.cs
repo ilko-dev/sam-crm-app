@@ -2,6 +2,7 @@ using CRM.BLL.Mapping;
 using CRM.BLL.MediatR.Company.Create;
 using CRM.DAL.Context;
 using CRM.DAL.Repositories;
+using CRM.DAL.Repositories.Client;
 using CRM.DAL.Repositories.Company;
 using CRM.DAL.Repositories.Task;
 using CRM.DAL.Repositories.User;
@@ -18,6 +19,8 @@ builder.Services.AddDbContext<CRMDbContext>(options =>
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
 
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateCompanyCommand).Assembly));
