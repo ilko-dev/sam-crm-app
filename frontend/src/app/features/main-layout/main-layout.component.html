@@ -1,0 +1,28 @@
+<div class="flex h-screen w-screen overflow-hidden">
+  
+  <div class="p-4 pr-2 flex flex-column h-full">
+    
+    <div class="w-14rem bg-white border-round-xl flex flex-column h-full overflow-hidden">
+      
+      <div class="flex align-items-center justify-content-center h-3rem border-bottom-1 surface-border shrink-0">
+          <span class="text-xl font-bold text-primary flex align-items-center gap-2">
+            SAM CRM
+          </span>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-2 custom-scrollbar">
+          <p-menu [model]="items" styleClass="w-full border-none"></p-menu>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="flex-1 flex flex-column h-full overflow-hidden py-4 pr-4 pl-2">
+    <div class="flex-1 overflow-y-auto bg-white border-round-xl p-5">
+        <router-outlet></router-outlet>
+    </div>
+
+  </div>
+
+</div>
