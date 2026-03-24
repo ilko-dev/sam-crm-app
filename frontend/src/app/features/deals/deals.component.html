@@ -1,0 +1,121 @@
+<div class="flex flex-column h-full">
+
+    <div class="flex justify-content-between align-items-center mb-4 shrink-0">
+        <h2 class="m-0 text-800 font-semibold text-2xl">Угоди</h2>
+        
+        <div class="flex gap-3">
+            <p-iconField iconPosition="left">
+                <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+                <input pInputText type="text" [(ngModel)]="searchQuery" placeholder="Пошук угод..." class="border-round-lg py-2 pr-2 text-base w-15rem" />
+            </p-iconField>
+            
+            <p-button icon="pi pi-plus" label="Створити угоду" styleClass="border-round-lg px-3 py-2 p-button-sm"></p-button>
+        </div>
+    </div>
+
+    <div class="grid mb-4 shrink-0">
+        
+        <div class="col-12 md:col-4">
+            <div class="bg-white border-1 surface-border border-round-lg p-3 flex justify-content-between align-items-center hover:border-primary transition-colors cursor-pointer">
+                <div>
+                    <span class="block text-500 font-medium text-sm mb-2">В роботі (Пайплайн)</span>
+                    <div class="text-800 font-bold text-2xl">
+                        {{ activePipelineValue | currency:'USD':'symbol':'1.0-0' }}
+                    </div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-blue-50 border-round-md" style="width: 3rem; height: 3rem">
+                    <i class="pi pi-chart-line text-blue-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+            <div class="bg-white border-1 surface-border border-round-lg p-3 flex justify-content-between align-items-center hover:border-green-500 transition-colors cursor-pointer">
+                <div>
+                    <span class="block text-500 font-medium text-sm mb-2">Успішно закрито</span>
+                    <div class="text-800 font-bold text-2xl text-green-600">
+                        {{ wonRevenue | currency:'USD':'symbol':'1.0-0' }}
+                    </div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-green-50 border-round-md" style="width: 3rem; height: 3rem">
+                    <i class="pi pi-check-circle text-green-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+            <div class="bg-white border-1 surface-border border-round-lg p-3 flex justify-content-between align-items-center hover:border-orange-500 transition-colors cursor-pointer">
+                <div>
+                    <span class="block text-500 font-medium text-sm mb-2">Нові ліди</span>
+                    <div class="text-800 font-bold text-2xl">
+                        {{ newLeadsCount }} <span class="text-sm font-normal text-500">шт.</span>
+                    </div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-orange-50 border-round-md" style="width: 3rem; height: 3rem">
+                    <i class="pi pi-users text-orange-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flex-1 overflow-y-auto pr-2 fadein animation-duration-200">
+        <p-table [value]="deals" styleClass="p-datatable-sm p-datatable-striped border-1 surface-border border-round-lg">
+            
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="title" style="min-width: 15rem">Назва угоди ↕</th>
+                    <th pSortableColumn="clientName" style="min-width: 12rem">Клієнт ↕</th>
+                    <th pSortableColumn="amount" style="width: 10rem">Бюджет ↕</th>
+                    <th pSortableColumn="stage" style="width: 12rem">Етап воронки ↕</th>
+                    <th pSortableColumn="expectedCloseDate" style="width: 10rem">Закриття ↕</th>
+                    <th style="width: 4rem" class="text-center"></th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-deal>
+                <tr>
+                    <td>
+                        <span class="font-medium text-800">{{ deal.title }}</span>
+                    </td>
+                    <td>
+                        <span class="text-600 flex align-items-center gap-2">
+                            <i class="pi pi-user text-400 text-sm"></i>
+                            {{ deal.clientName }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="font-bold text-700">
+                            {{ deal.amount | currency:'USD':'symbol':'1.0-0' }}
+                        </span>
+                    </td>
+                    <td>
+                        <p-tag [severity]="getStageSeverity(deal.stage)" 
+                               [value]="getStageLabel(deal.stage)" 
+                               [rounded]="true" 
+                               styleClass="px-3">
+                        </p-tag>
+                    </td>
+                    <td>
+                        <span class="text-500 text-sm">
+                            <i class="pi pi-calendar mr-1 text-xs"></i>
+                            {{ deal.expectedCloseDate | date:'dd MMM yyyy' }}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <p-button icon="pi pi-ellipsis-h" [rounded]="true" [text]="true" severity="secondary" styleClass="w-2rem h-2rem p-0"></p-button>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="6" class="text-center p-5 text-500 text-base">
+                        Угод поки немає. Час продавати! 💰
+                    </td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+    </div>
+</div>

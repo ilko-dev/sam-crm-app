@@ -1,0 +1,90 @@
+<div class="flex flex-column h-full">
+
+    <div class="flex justify-content-between align-items-center mb-4 shrink-0">
+        <h2 class="m-0 text-800 font-semibold text-2xl">База клієнтів</h2>
+        
+        <div class="flex gap-3">
+           <p-iconField iconPosition="left">
+                <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+                <input pInputText type="text" [(ngModel)]="searchQuery" placeholder="Пошук..." class="border-round-lg py-2 pr-2 text-base w-15rem" />
+            </p-iconField>
+            <p-button icon="pi pi-plus" label="Новий клієнт" styleClass="border-round-lg px-3 py-2 p-button-sm"></p-button>
+        </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto pr-2 fadein animation-duration-200">
+        <p-table [value]="clients" styleClass="p-datatable-sm p-datatable-striped border-1 surface-border border-round-lg">
+            
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="firstName" style="min-width: 15rem" class="cursor-pointer hover:text-primary transition-colors">
+                        Клієнт ↕
+                    </th>
+                    <th pSortableColumn="companyName" style="min-width: 12rem" class="cursor-pointer hover:text-primary transition-colors">
+                        Компанія ↕
+                    </th>
+                    <th style="min-width: 15rem">Контакти</th>
+                    <th pSortableColumn="status" style="width: 8rem" class="cursor-pointer hover:text-primary transition-colors text-center">
+                        Статус ↕
+                    </th>
+                    <th style="width: 4rem" class="text-center"></th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-client>
+                <tr>
+                    <td>
+                        <div class="flex align-items-center gap-3">
+                            <p-avatar [label]="getInitials(client.firstName, client.lastName)" 
+                                      styleClass="bg-purple-100 text-purple-700 font-bold" 
+                                      shape="circle"></p-avatar>
+                            <div class="flex flex-column">
+                                <span class="font-semibold text-800">{{ client.firstName }} {{ client.lastName }}</span>
+                                <span class="text-xs text-500">ID: {{ client.id }}</span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <span class="text-700 flex align-items-center">
+                            <i class="pi pi-building text-400 mr-2 text-sm"></i>
+                            {{ client.companyName || '—' }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <div class="flex flex-column gap-1">
+                            <span class="text-700 text-sm flex align-items-center">
+                                <i class="pi pi-envelope text-400 mr-2 text-xs"></i> 
+                                {{ client.email }}
+                            </span>
+                            <span class="text-500 text-xs flex align-items-center" *ngIf="client.phone">
+                                <i class="pi pi-phone text-400 mr-2 text-xs"></i> 
+                                {{ client.phone }}
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="text-center">
+                        <p-tag *ngIf="client.status === 'VIP'" severity="warn" value="VIP" [rounded]="true" styleClass="px-3"></p-tag>
+                        <p-tag *ngIf="client.status === 'Active'" severity="success" value="Активний" [rounded]="true" styleClass="px-3"></p-tag>
+                        <p-tag *ngIf="client.status === 'New'" severity="info" value="Новий" [rounded]="true" styleClass="px-3"></p-tag>
+                    </td>
+
+                    <td class="text-center">
+                        <p-button icon="pi pi-ellipsis-v" [rounded]="true" [text]="true" severity="secondary" styleClass="w-2rem h-2rem p-0"></p-button>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5" class="text-center p-5 text-500 text-base">
+                        Клієнтів не знайдено. Час додати першого ліда! 🚀
+                    </td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+    </div>
+</div>

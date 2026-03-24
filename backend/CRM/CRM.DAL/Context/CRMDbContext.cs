@@ -17,6 +17,7 @@ namespace CRM.DAL.Context
         public DbSet<User> Users => Set<User>();
         public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
         public DbSet<Task> Tasks => Set<Task>();
+        public DbSet<Deal> Deals => Set<Deal>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CRMDbContext).Assembly);

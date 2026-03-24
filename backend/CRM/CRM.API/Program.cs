@@ -4,6 +4,7 @@ using CRM.DAL.Context;
 using CRM.DAL.Repositories;
 using CRM.DAL.Repositories.Client;
 using CRM.DAL.Repositories.Company;
+using CRM.DAL.Repositories.Deal;
 using CRM.DAL.Repositories.Task;
 using CRM.DAL.Repositories.User;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IDealRepository, DealRepository>();
 
 
 builder.Services.AddMediatR(cfg =>
@@ -31,6 +33,17 @@ builder.Services.AddAutoMapper(typeof(CompanyProfile).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +54,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();
 

@@ -5,8 +5,7 @@ html {
 }
 
 :root {
-    /* --primary-color: #8b5cf6; */ 
-    
+    --primary-color: #8b5cf6; 
     --my-app-bg: #f7f7f7; 
 }
 
@@ -15,4 +14,20 @@ body {
     padding: 0;
     font-family: 'Nunito Sans', sans-serif;
     background-color: var(--my-app-bg);
+}
+
+.p-menu .p-menu-item-link.p-menu-item-link-active {
+    background: var(--purple-50) !important;
+    border-left: 4px solid var(--primary-color) !important;
+    border-radius: 0 8px 8px 0 !important;
+}
+
+.p-menu .p-menu-item-link.p-menu-item-link-active .p-menu-item-label,
+.p-menu .p-menu-item-link.p-menu-item-link-active .p-menu-item-icon {
+    color: var(--primary-color) !important;
+    font-weight: 700 !important;
+}
+
+.p-menu .p-menu-item-link.p-menu-item-link-active:hover {
+    background: var(--purple-50) !important;
 }

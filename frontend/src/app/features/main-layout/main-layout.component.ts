@@ -27,7 +27,7 @@ export class MainLayoutComponent implements OnInit {
         label: 'БІЗНЕС-ПРОЦЕСИ',
         items: [
           { label: 'Клієнти', icon: 'pi pi-users', routerLink: '/clients' },
-          { label: 'Угоди', icon: 'pi pi-briefcase', routerLink: '/deals' },
+          { label: 'Угоди', icon: 'pi pi-briefcase', routerLink: '/deals', routerLinkActiveOptions: { exact: true } },
           { label: 'Задачі', icon: 'pi pi-check-square', routerLink: '/tasks', routerLinkActiveOptions: { exact: true } }
         ]
       },
